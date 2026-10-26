@@ -1,0 +1,13 @@
+{
+ "n": 8999,
+ "late_rate": 0.6355150572285809,
+ "ntrain": 6749,
+ "ntest": 2250,
+ "mlp_best": {
+  "m__alpha": "0.01",
+  "m__hidden_layer_sizes": "(64, 32)"
+ },
+ "late_rate_discount_gt10": 1.0,
+ "late_rate_discount_le10": 0.4836272040302267,
+ "share_discount_gt10": 0.29414379375486166
+}

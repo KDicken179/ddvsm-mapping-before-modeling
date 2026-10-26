@@ -1,0 +1,15 @@
+{
+ "n_raw": 180519,
+ "n_canceled_removed": 7754,
+ "n_model": 172765,
+ "late_rate": 0.5728996035076549,
+ "n_train": 138211,
+ "n_test": 34554,
+ "split_date": "2017-04-22 03:43:00",
+ "label_rule_match": 1.0,
+ "late_rate_morning": 0.5428571428571428,
+ "late_rate_afternoon": 0.6031112143022986,
+ "test_lines_no_window": 1865,
+ "test_late_no_window": 987,
+ "test_late_total": 19795
+}

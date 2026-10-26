@@ -1,0 +1,202 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  :root{--ink:#1d1d1f;--muted:#5b5f66;--line:#9aa0a6;--box:#f4f5f7;--hdr:#2f3b4c;
+        --ok:#2e7d4f;--sys:#b7791f;--no:#b23b3b;--win:#e8efe9;}
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;font-family:"Liberation Sans",Arial,sans-serif;color:var(--ink);width:1560px;padding:28px 30px 24px}
+  h1{font-size:30px;margin:0 0 4px;font-weight:700}
+  .sub{font-size:18px;color:var(--muted);margin-bottom:22px}
+  .lane{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:22px;position:relative}
+  .rowlabel{position:absolute;left:-34px;font-size:12px;letter-spacing:.12em;color:var(--muted);writing-mode:vertical-rl;transform:rotate(180deg)}
+  /* process boxes */
+  .proc{background:var(--hdr);color:#fff;border-radius:6px;padding:14px 12px;text-align:center;position:relative;min-height:84px}
+  .proc .n{font-size:13px;opacity:.75;letter-spacing:.08em}
+  .proc .t{font-size:20px;font-weight:700;margin-top:3px}
+  .proc .sys{font-size:14.5px;opacity:.85;margin-top:5px}
+  .proc.y{background:#fff;color:var(--ink);border:3px solid var(--hdr)}
+  .proc:not(:last-child)::after{content:"";position:absolute;right:-20px;top:50%;width:14px;height:2px;background:var(--hdr)}
+  .proc:not(:last-child)::before{content:"";position:absolute;right:-22px;top:calc(50% - 6px);border-left:10px solid var(--hdr);border-top:7px solid transparent;border-bottom:7px solid transparent}
+  .wait{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:22px;margin:8px 0 4px}
+  .wait div{font-size:14.5px;color:var(--muted);text-align:center}
+  .tri{display:inline-block;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:13px solid var(--sys);vertical-align:-2px;margin-right:5px}
+  /* decision window */
+  .window{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));column-gap:22px;margin:10px 0 18px;font-size:13.5px;font-weight:700}
+  .w{padding:7px 10px;border-radius:4px;text-align:center}
+  .w1{grid-column:1/5;background:#dcebe0;color:#1f5a37}
+  .w2{grid-column:5/6;background:#f6e8cf;color:#7a4f10}
+  .w3{grid-column:6/7;background:#f3d9d9;color:#7d2323}
+  /* cascade */
+  .col{display:flex;flex-direction:column;gap:0}
+  .lvl{font-size:12.5px;letter-spacing:.12em;color:var(--muted);font-weight:700;margin:0 0 4px 2px}
+  .card{background:var(--box);border:1px solid #d9dce1;border-radius:6px;padding:9px 9px;font-size:16px;line-height:1.32}
+  .dec{border-left:5px solid var(--hdr);font-weight:700}
+  .q{border-left:5px solid #6b7a90}
+  .q p{margin:0 0 6px}.q p:last-child{margin:0}
+  .v{border-left:5px solid #8d99aa;padding:8px 10px}
+  .v div{display:flex;gap:7px;align-items:flex-start;margin:3px 0}
+  .m{flex:0 0 18px;height:18px;border-radius:50%;font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .ok{background:var(--ok)} .sy{background:var(--sys)} .no{background:var(--no)}
+  .xo{background:#fff;border:2px solid var(--muted);color:var(--muted)}
+  .arrow{height:18px;display:flex;justify-content:center}
+  .arrow span{width:2px;background:var(--line);position:relative}
+  .arrow span::after{content:"";position:absolute;bottom:-1px;left:-5px;border-top:8px solid var(--line);border-left:6px solid transparent;border-right:6px solid transparent}
+  .src{font-size:14.5px;color:var(--muted);margin-top:7px;padding:7px 10px;border:1px dashed #b8bdc4;border-radius:6px;background:#fff}
+  .k{font-family:"Liberation Mono",monospace;font-size:13px;white-space:nowrap;background:#e3efe7;padding:0 3px;border-radius:3px}
+  .post{margin-top:10px;border:1.5px dashed var(--no);background:#fbf1f1;border-radius:6px;padding:9px 9px;font-size:15px;line-height:1.3}
+  /* footer */
+  .foot{display:grid;grid-template-columns:1.25fr 1fr;gap:26px;margin-top:24px;border-top:1px solid #d9dce1;padding-top:16px}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;font-size:16px;align-items:center}
+  .legend span{display:flex;gap:7px;align-items:center}
+  .tally{display:flex;gap:14px;justify-content:flex-end}
+  .tile{border:1px solid #d9dce1;border-radius:6px;padding:9px 14px;min-width:150px}
+  .tile b{display:block;font-size:26px}
+  .tile small{font-size:14px;color:var(--muted)}
+  .note{font-size:14px;color:var(--muted);margin-top:10px;grid-column:1/3}
+.v div,.post div:has(> i.m){display:grid !important;grid-template-columns:18px minmax(0,1fr);column-gap:7px;align-items:start}.v .k,.post .k{grid-column:2;justify-self:start;margin-top:2px;font-size:12px;white-space:normal}.loc{grid-column:2;font-size:12.5px;color:#5b5f66;font-style:italic;margin-top:1px;line-height:1.2}h1,.sub,.note{display:none}.lane{margin-top:0}</style></head><body>
+<h1>Decision Data Value Stream Map</h1>
+<div class="sub">Order-to-delivery value stream, decision cascade at each step, and the e-commerce example dataset overlaid to show data gaps (late-shipment prediction)</div>
+
+<div class="lane">
+  <div class="proc"><div class="n">STEP 1</div><div class="t">Order Entry</div><div class="sys">ERP sales order</div></div>
+  <div class="proc"><div class="n">STEP 2</div><div class="t">Credit &amp; Release</div><div class="sys">ERP order status</div></div>
+  <div class="proc"><div class="n">STEP 3</div><div class="t">Pick &amp; Pack</div><div class="sys">WMS</div></div>
+  <div class="proc"><div class="n">STEP 4</div><div class="t">Carrier Tender</div><div class="sys">TMS</div></div>
+  <div class="proc"><div class="n">STEP 5</div><div class="t">Pickup &amp; Transit</div><div class="sys">Carrier EDI 214 / visibility</div></div>
+  <div class="proc y"><div class="n">OUTCOME (Y)</div><div class="t">Delivered On Time?</div><div class="sys" style="opacity:1;color:#5b5f66">Proof of delivery</div></div>
+</div>
+<div class="wait">
+  <div><span class="tri"></span>Queue: awaiting credit/release</div>
+  <div><span class="tri"></span>Queue: awaiting wave/pick</div>
+  <div><span class="tri"></span>Queue: awaiting tender</div>
+  <div><span class="tri"></span>Queue: awaiting pickup</div>
+  <div><span class="tri"></span>In transit</div>
+  <div></div>
+</div>
+<div class="window">
+  <div class="w w1">Decision window: risk score must be available here to expedite, re-sequence, or re-tender</div>
+  <div class="w w2">Limited options</div>
+  <div class="w w3">Too late to act</div>
+</div>
+
+<div class="lane">
+  <!-- 1 -->
+  <div class="col">
+    <div class="lvl">DECISION</div>
+    <div class="card dec">Can we commit to the requested date?</div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">QUESTIONS</div>
+    <div class="card q"><p>Is the requested date feasible against lead time?</p><p>Is the item available to promise?</p></div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">VARIABLES</div>
+    <div class="card v">
+      <div><i class="m sy">◐</i>Requested vs. promised date gap<span class="loc">&#8627; ERP order header</span></div>
+      <div><i class="m sy">◐</i>Quoted lead time<span class="loc">&#8627; ERP item master</span></div>
+      <div><i class="m sy">◐</i>Available-to-promise qty<span class="loc">&#8627; ERP inventory and ATP</span></div>
+      <div><i class="m ok">✓</i>Discount offered <span class="k">Discount_offered</span><span class="loc">&#8627; ERP pricing</span></div>
+      <div><i class="m ok">✓</i>Product importance <span class="k">Product_importance</span><span class="loc">&#8627; Product master</span></div>
+      <div><i class="m ok">✓</i>Product cost <span class="k">Cost_of_the_Product</span><span class="loc">&#8627; ERP item cost</span></div>
+    </div>
+    <div class="src">Primary system: ERP order header and ATP</div>
+  </div>
+  <!-- 2 -->
+  <div class="col">
+    <div class="lvl">DECISION</div>
+    <div class="card dec">Release the order now or hold it?</div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">QUESTIONS</div>
+    <div class="card q"><p>How long has the order been waiting?</p><p>How much slack remains to the promise date?</p></div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">VARIABLES</div>
+    <div class="card v">
+      <div><i class="m sy">◐</i>Order-to-release hours<span class="loc">&#8627; ERP status log</span></div>
+      <div><i class="m sy">◐</i>Slack days to promise date<span class="loc">&#8627; ERP order header</span></div>
+      <div><i class="m sy">◐</i>Credit hold flag and duration<span class="loc">&#8627; ERP credit module</span></div>
+      <div><i class="m no">✕</i>Reason code for hold<span class="loc">&#8627; Not recorded; email or notes</span></div>
+    </div>
+    <div class="src">Primary system: ERP status change log</div>
+  </div>
+  <!-- 3 -->
+  <div class="col">
+    <div class="lvl">DECISION</div>
+    <div class="card dec">Prioritize this order in the wave?</div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">QUESTIONS</div>
+    <div class="card q"><p>Is the warehouse running behind?</p><p>Is the item difficult to handle or ship?</p></div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">VARIABLES</div>
+    <div class="card v">
+      <div><i class="m sy">◐</i>Pick backlog at release<span class="loc">&#8627; WMS task queue</span></div>
+      <div><i class="m no">✕</i>Labor utilization by shift<span class="loc">&#8627; Shift labor spreadsheet</span></div>
+      <div><i class="m sy">◐</i>Pick and pack complete timestamps<span class="loc">&#8627; WMS scan events</span></div>
+      <div><i class="m ok">✓</i>Shipment weight <span class="k">Weight_in_gms</span><span class="loc">&#8627; WMS pack station</span></div>
+      <div><i class="m ok">✓</i>Warehouse zone <span class="k">Warehouse_block</span><span class="loc">&#8627; WMS location master</span></div>
+    </div>
+    <div class="src">Primary system: WMS task and labor records</div>
+  </div>
+  <!-- 4 -->
+  <div class="col">
+    <div class="lvl">DECISION</div>
+    <div class="card dec">Expedite, switch carrier, or warn the customer?</div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">QUESTIONS</div>
+    <div class="card q"><p>Will the carrier accept the load on time?</p><p>Is this lane running late?</p></div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">VARIABLES</div>
+    <div class="card v">
+      <div><i class="m sy">◐</i>Carrier tender acceptance rate<span class="loc">&#8627; TMS tender history</span></div>
+      <div><i class="m sy">◐</i>Lane on-time rate, last 30 days<span class="loc">&#8627; Carrier scorecard spreadsheet</span></div>
+      <div><i class="m sy">◐</i>Hours from tender to required pickup<span class="loc">&#8627; TMS appointments</span></div>
+      <div><i class="m ok">✓</i>Shipment mode <span class="k">Mode_of_Shipment</span><span class="loc">&#8627; Order header</span></div>
+    </div>
+    <div class="src">Primary system: TMS tender and scorecard</div>
+  </div>
+  <!-- 5 -->
+  <div class="col">
+    <div class="lvl">DECISION</div>
+    <div class="card dec">Intervene while in transit?</div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">QUESTIONS</div>
+    <div class="card q"><p>Did pickup happen on time?</p><p>Is the ETA slipping?</p></div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">VARIABLES</div>
+    <div class="card v">
+      <div><i class="m sy">◐</i>Pickup delay vs. appointment<span class="loc">&#8627; Dock appointment log</span></div>
+      <div><i class="m no">✕</i>Milestone ETA variance<span class="loc">&#8627; Carrier portal or EDI 214</span></div>
+      <div><i class="m no">✕</i>Weather and congestion on route<span class="loc">&#8627; External data feed</span></div>
+    </div>
+    <div class="src">Primary system: carrier milestones, visibility platform</div>
+  </div>
+  <!-- 6 -->
+  <div class="col">
+    <div class="lvl">TARGET</div>
+    <div class="card dec" style="border-left-color:#2e7d4f">Shipment late (1) or on time (0)</div>
+    <div class="arrow"><span></span></div>
+    <div class="lvl">VARIABLE</div>
+    <div class="card v"><div><i class="m ok">✓</i>Target <span class="k">Reached.on.Time_Y.N</span><span class="loc">&#8627; Proof of delivery</span></div></div>
+    <div class="post"><b>Likely recorded during or after delivery. Exclude as predictors.</b>
+      <div style="margin-top:6px;display:flex;gap:7px"><i class="m xo">!</i>Customer rating <span class="k">Customer_rating</span><span class="loc">&#8627; Post-delivery customer survey</span></div>
+      <div style="margin-top:4px;display:flex;gap:7px"><i class="m xo">!</i>Care calls <span class="k">Customer_care_calls</span><span class="loc">&#8627; Call center log</span></div>
+      <div style="margin-top:8px;color:#5b5f66">Not mapped to any decision: <span class="k">Prior_purchases</span>, <span class="k">Gender</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <div>
+    <div class="legend">
+      <span><i class="m ok">✓</i>In the example dataset</span>
+      <span><i class="m sy">◐</i>Captured elsewhere in the organization, missing from dataset</span>
+      <span><i class="m no">✕</i>Not captured today</span>
+      <span><i class="m xo">!</i>Timing violation (post-outcome)</span>
+      <span><span style="font-style:italic;color:#5b5f66">&#8627; Where the data stream lives</span></span><span><span class="tri"></span>Wait / queue where lateness accumulates</span>
+    </div>
+  </div>
+  <div class="tally">
+    <div class="tile"><b>6 of 22</b><small>predictor variables in the dataset</small></div>
+    <div class="tile"><b>0 of 10</b><small>timing and queue variables</small></div>
+    <div class="tile"><b>2</b><small>post-outcome fields to exclude</small></div>
+  </div>
+  <div class="note">Illustrative example. System sources and capture status reflect a typical manufacturer and would be confirmed during a process walk. Dataset fields from the e-commerce shipping dataset (Prachi13, n.d.).</div>
+</div>
+</body></html>

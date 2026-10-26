@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use these materials, please cite the article and this repository."
+title: "Mapping Before Modeling: Decision Data Value Stream Map (DDVSM) replication materials"
+authors:
+  - family-names: Dickenson
+    given-names: K. Scott
+    orcid: "https://orcid.org/0009-0009-8756-272X"
+    affiliation: "Daniels College of Business, University of Denver"
+    email: scott.dickenson@du.edu
+license: MIT
+date-released: 2026-10-26
+keywords:
+  - value stream mapping
+  - Toyota Production System
+  - machine learning
+  - data requirements
+  - data leakage
