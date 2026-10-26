@@ -1,0 +1,8 @@
+{
+  "title": "Mapping Before Modeling: Decision Data Value Stream Map (DDVSM) replication materials",
+  "upload_type": "software",
+  "description": "Code, map sources, and results reproducing the public-data demonstrations of the Decision Data Value Stream Map.",
+  "creators": [{"name": "Dickenson, K. Scott", "affiliation": "University of Denver", "orcid": "0009-0009-8756-272X"}],
+  "license": "MIT",
+  "keywords": ["value stream mapping", "machine learning", "data requirements", "data leakage", "Toyota Production System"]
+}
