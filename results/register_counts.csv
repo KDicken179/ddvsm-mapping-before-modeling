@@ -1,0 +1,3 @@
+case,prediction_point_after_step,specified_predictors,in_dataset,in_dataset_and_valid_at_prediction_point,specification_coverage,timing_variables,timing_in_dataset_and_valid,timing_coverage,post_outcome_fields,captured_elsewhere,not_captured
+A,3,22,6,6,0.273,10,0,0.0,2,12,4
+B,2,21,9,9,0.429,9,2,0.222,4,8,4

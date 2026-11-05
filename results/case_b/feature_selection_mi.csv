@@ -1,0 +1,32 @@
+field,mutual_information,rank,post_outcome
+Delivery Status,0.682206964623256,1,True
+Days for shipping (real),0.28958721619695904,2,True
+Shipping Mode,0.1412696256600816,3,False
+Days for shipment (scheduled),0.14079391733199542,4,False
+Order City,0.08192522379865785,5,False
+Latitude,0.06356955498940109,6,False
+Longitude,0.03615636837930247,7,False
+Order State,0.025964447915797398,8,False
+Customer City,0.01230579119316299,9,False
+Sales,0.004589510393028018,10,False
+Order Item Discount Rate,0.003433564818813517,11,False
+Order Country,0.003305306743505762,12,False
+Sales per customer,0.002281329008503974,13,False
+Product Status,0.002064733328015045,14,False
+Customer State,0.0012136230938645683,15,False
+Order Item Total,0.0008461775839743169,16,False
+Category Name,0.0003950214954049642,17,False
+Order Region,0.00024265591883935837,18,False
+Order Item Discount,0.00014527404512287845,19,False
+Order Status,0.00011013154359443278,20,True
+Department Name,8.0345374605717e-05,21,False
+Order Item Quantity,6.287303723540028e-05,22,False
+Order Item Profit Ratio,5.4122472702644586e-05,23,False
+Type,4.846026342544829e-05,24,False
+Customer Segment,1.5246959571002527e-05,25,False
+Market,7.993947807968804e-06,26,False
+Customer Country,6.659544195208866e-06,27,False
+Benefit per order,0.0,28,False
+Order Item Product Price,0.0,29,False
+Order Profit Per Order,0.0,30,False
+Product Price,0.0,31,False

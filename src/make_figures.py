@@ -62,10 +62,43 @@ def figure4(r, out):
     fig.tight_layout(); fig.savefig(out / "Figure4_DataCo_AUC.pdf"); fig.savefig(out / "Figure4_DataCo_AUC.png", dpi=600)
 
 
+def figure_confirmation(gap, abl, res, out):
+    """Revised manuscript Figure 3: what the models confirmed in each case (GBT only for Case B)."""
+    fig, (a, b) = plt.subplots(1, 2, figsize=(8.0, 3.5), gridspec_kw={"width_ratios": [1.0, 1.05]})
+    segs = [("Discount > 10\n(dataset rule)", gap["caught_hi"], gap["missed_hi"]), ("Discount \u2264 10\n(operational zone)", gap["caught_lo"], gap["missed_lo"])]
+    for i, (_, c, m) in enumerate(segs):
+        a.barh(i, c, color=DARK, height=0.6); a.barh(i, m, left=c, color=RED, height=0.6)
+        a.text(c / 2, i, f"{c}", ha="center", va="center", color="white", fontsize=9)
+        if m > 20:
+            a.text(c + m / 2, i, f"{m}", ha="center", va="center", color="white", fontsize=9, fontweight="bold")
+        else:
+            a.text(c + m + 12, i, f"{m} missed", ha="left", va="center", fontsize=8.5)
+    a.set_yticks([0, 1]); a.set_yticklabels([s[0] for s in segs], fontsize=9); a.invert_yaxis(); a.set_xlim(0, 1000)
+    a.set_xlabel("Late shipments in test set", fontsize=9); a.set_title("A. Case A: where missed late shipments fall", fontsize=9.5, loc="left")
+    a.legend(handles=[Patch(color=DARK, label="Caught"), Patch(color=RED, label="Missed")], frameon=False, fontsize=8.5, loc="lower right", bbox_to_anchor=(1.0, 0.52))
+    a.spines[["top", "right"]].set_visible(False)
+    g = res[res.Model == "GBT"].set_index("Feature set")["AUC"]
+    vals = [("Commercial\nonly", g["S1 Commercial attributes"], False),
+            ("+ mode and\nsched. days", abl.set_index("Feature set").loc["Commercial + shipping mode and scheduled days", "AUC"], False),
+            ("+ timing and\nworkload", abl.set_index("Feature set").loc["Full DDVSM specification", "AUC"], False),
+            ("Naive\n(all fields)", g["S0 Naive (all fields)"], True)]
+    for i, (lab, v, inval) in enumerate(vals):
+        b.bar(i, v, 0.6, color="white" if inval else DARK, edgecolor=RED if inval else DARK, linewidth=2 if inval else 0, hatch="//" if inval else None)
+        b.text(i, v + 0.012, f"{v:.3f}", ha="center", fontsize=8.5, color=RED if inval else "black")
+    b.text(3, 1.06, "Invalid at\ndecision time", ha="center", fontsize=8, color=RED)
+    b.axhline(0.5, color="#777", ls="--", lw=0.9)
+    b.set_xticks(range(4)); b.set_xticklabels([v[0] for v in vals], fontsize=8); b.set_ylim(0.4, 1.14)
+    b.set_ylabel("Test AUC", fontsize=9); b.set_title("B. Case B: test AUC by feature set", fontsize=9.5, loc="left")
+    b.spines[["top", "right"]].set_visible(False)
+    fig.tight_layout(); fig.savefig(out / "Figure3_Confirmation.pdf"); fig.savefig(out / "Figure3_Confirmation.png", dpi=600)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--case-a", default="results/case_a"); ap.add_argument("--case-b", default="results/case_b"); ap.add_argument("--out", default="figures")
     a = ap.parse_args(); out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     figure2(json.load(open(Path(a.case_a) / "gap.json")), out)
     figure4(pd.read_csv(Path(a.case_b) / "results.csv"), out)
+    figure_confirmation(json.load(open(Path(a.case_a) / "gap.json")), pd.read_csv(Path(a.case_b) / "ablation.csv"),
+                        pd.read_csv(Path(a.case_b) / "results.csv"), out)
     print("figures written to", out)

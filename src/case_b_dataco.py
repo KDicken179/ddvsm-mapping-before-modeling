@@ -21,10 +21,12 @@ from sklearn.inspection import permutation_importance
 SEED = 42
 COMMERCIAL_NUM = ["Order Item Discount", "Order Item Discount Rate", "Order Item Product Price", "Order Item Quantity", "Sales",
                   "Order Item Total", "Order Item Profit Ratio", "Order Profit Per Order", "Benefit per order"]
-COMMERCIAL_CAT = ["Type", "Category Name", "Department Name", "Customer Segment", "Market"]
-TIMING = ["order_hour", "order_wday", "order_month", "load_24h", "load_7d", "region_load_7d"]
+# Order-entry commercial attributes on the Case B map (Step 1). Product category and department are not on the map.
+COMMERCIAL_CAT = ["Type", "Customer Segment", "Market"]
+# Timing and queue variables on the map that the dataset supports (see maps/variable_register.csv)
+TIMING = ["order_hour", "region_load_7d"]
 DDVSM_NUM = COMMERCIAL_NUM + ["Days for shipment (scheduled)", "lines_in_order"] + TIMING
-DDVSM_CAT = COMMERCIAL_CAT + ["Shipping Mode", "Order Region", "Order Country", "Customer State", "lane"]
+DDVSM_CAT = COMMERCIAL_CAT + ["Shipping Mode", "lane"]
 # Fields the DDVSM flags as recorded after the decision window or after the outcome
 POST_OUTCOME_NUM = ["Days for shipping (real)", "ship_lag_days", "ship_wday", "Latitude", "Longitude"]
 POST_OUTCOME_CAT = ["Order Status"]

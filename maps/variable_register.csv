@@ -1,0 +1,50 @@
+case,map_step,variable,dataset_field,status,record_step,class,source
+A,1,Requested vs. promised date gap,,captured_elsewhere,1,timing,ERP order header
+A,1,Quoted lead time,,captured_elsewhere,1,timing,ERP item master
+A,1,Available-to-promise qty,,captured_elsewhere,1,other,ERP inventory and ATP
+A,1,Discount offered,Discount_offered,in_dataset,1,other,ERP pricing
+A,1,Product importance,Product_importance,in_dataset,1,other,Product master
+A,1,Product cost,Cost_of_the_Product,in_dataset,1,other,ERP item cost
+A,2,Order-to-release hours,,captured_elsewhere,2,timing,ERP status log
+A,2,Slack days to promise date,,captured_elsewhere,2,timing,ERP order header
+A,2,Credit hold flag and duration,,captured_elsewhere,2,timing,ERP credit module
+A,2,Reason code for hold,,not_captured,2,other,Not recorded; email or notes
+A,3,Pick backlog at release,,captured_elsewhere,3,timing,WMS task queue
+A,3,Labor utilization by shift,,not_captured,3,other,Shift labor spreadsheet
+A,3,Pick and pack complete timestamps,,captured_elsewhere,3,timing,WMS scan events
+A,3,Shipment weight,Weight_in_gms,in_dataset,3,other,WMS pack station
+A,3,Warehouse zone,Warehouse_block,in_dataset,1,other,WMS location master
+A,4,Carrier tender acceptance rate,,captured_elsewhere,1,other,TMS tender history
+A,4,"Lane on-time rate, last 30 days",,captured_elsewhere,1,other,Carrier scorecard spreadsheet
+A,4,Hours from tender to required pickup,,captured_elsewhere,4,timing,TMS appointments
+A,4,Shipment mode,Mode_of_Shipment,in_dataset,1,other,Order header
+A,5,Pickup delay vs. appointment,,captured_elsewhere,5,timing,Dock appointment log
+A,5,Milestone ETA variance,,not_captured,5,timing,Carrier portal or EDI 214
+A,5,Weather and congestion on route,,not_captured,5,other,External data feed
+A,post,Customer rating,Customer_rating,post_outcome,post,other,Post-delivery customer survey
+A,post,Care calls,Customer_care_calls,post_outcome,post,other,Call center log
+B,1,Order time of day,order date (DateOrders),in_dataset,1,timing,ERP order header
+B,1,Payment type,Type,in_dataset,1,other,ERP order header
+B,1,"Price, discount, quantity",Order item financial fields,in_dataset,1,other,ERP order lines
+B,1,"Customer segment, market",Customer Segment; Market,in_dataset,1,other,CRM customer master
+B,1,Requested vs. promised date gap,,captured_elsewhere,1,timing,ERP order header
+B,1,Available-to-promise qty,,captured_elsewhere,1,other,ERP inventory and ATP
+B,2,Lines in order (derived),Order Id,in_dataset,1,other,ERP order lines
+B,2,Order-to-release hours,,captured_elsewhere,2,timing,ERP status log
+B,2,Slack days to promise date,,captured_elsewhere,2,timing,ERP order header
+B,3,"Regional order load, prior 7 days (derived)",order date (DateOrders); Order Region,in_dataset,1,timing,Derived from ERP order history
+B,3,Pick backlog at release,,captured_elsewhere,3,timing,WMS task queue
+B,3,Pick and pack timestamps,,captured_elsewhere,3,timing,WMS scan events
+B,3,Shipping facility,,not_captured,3,other,Not recorded
+B,3,Shipment weight,,not_captured,3,other,WMS pack station
+B,4,Shipping mode,Shipping Mode,in_dataset,1,other,ERP order header
+B,4,Scheduled shipping days,Days for shipment (scheduled),in_dataset,1,other,ERP order header
+B,4,Lane: mode x region (derived),Shipping Mode; Order Region,in_dataset,1,other,Derived from ERP order and region
+B,4,Carrier and tender acceptance,,captured_elsewhere,1,other,TMS tender history
+B,4,Hours from tender to pickup,,captured_elsewhere,4,timing,TMS appointments
+B,5,Milestone ETA variance,,not_captured,5,timing,Carrier portal or EDI 214
+B,5,Weather and congestion,,not_captured,5,other,External data feed
+B,post,Order status at extract,Order Status,post_outcome,post,other,ERP status at extract time
+B,post,Actual ship date,shipping date (DateOrders),post_outcome,post,other,WMS ship confirmation
+B,post,Actual shipping days,Days for shipping (real),post_outcome,post,other,WMS ship confirmation
+B,post,Label restated,Delivery Status,post_outcome,post,other,Derived from proof of delivery
